@@ -1,1 +1,400 @@
-PLACEHOLDER
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Skills, agents, and memories — Longmont AI</title>
+<meta name="description" content="A Longmont AI mini-lesson on the difference between skills, agents, and memories in AI development." />
+<meta name="theme-color" content="#09090b" />
+<link rel="icon" type="image/png" href="https://longmontai.com/brand/favicon/favicon-32.png" />
+<meta property="og:title" content="Skills, agents, and memories — Longmont AI" />
+<meta property="og:description" content="Three words. Three layers. Stop mixing them up." />
+<meta property="og:image" content="https://longmontai.com/brand/social/og-image.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Beleza&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --bg-deep: #09090b;
+  --bg-card: #18181b;
+  --bg-card-hover: #27272a;
+  --color-sunset: #FF9E64;
+  --color-pink: #FF0080;
+  --color-purple: #7928CA;
+  --color-cyan: #00F0FF;
+  --color-blue: #007CF0;
+  --text-primary: #FFFFFF;
+  --text-secondary: #A1A1AA;
+  --text-muted: #71717A;
+  --glass-bg: rgba(24,24,27,.7);
+  --glass-border: rgba(255,255,255,.08);
+  --radius: 16px;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  font-size: 19.2px;
+}
+@media (max-width: 760px) { :root { font-size: 17px; } }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: Beleza, Charter, Georgia, serif;
+  line-height: 1.65;
+}
+#bg-mesh {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(800px 500px at 15% 50%, rgba(121,40,202,.08), transparent 60%),
+    radial-gradient(700px 420px at 85% 30%, rgba(0,240,255,.08), transparent 55%),
+    radial-gradient(900px 400px at 50% 0%, rgba(59,130,246,.05), transparent 50%);
+  filter: blur(60px);
+}
+.wrap { position: relative; z-index: 1; width: min(1100px, calc(100% - 3rem)); margin: 0 auto; }
+@media (max-width: 760px) { .wrap { width: min(1100px, calc(100% - 2rem)); } }
+.mono {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  letter-spacing: .16em; text-transform: uppercase; font-size: .75rem; font-weight: 500;
+}
+.grad {
+  background: linear-gradient(to right, var(--color-blue), var(--color-purple), var(--color-pink));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+a { color: var(--color-blue); text-decoration: none; }
+a:hover { color: var(--text-primary); }
+header.bar {
+  position: sticky; top: 0; z-index: 20;
+  background: rgba(9,9,11,.8); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--glass-border);
+}
+header.bar .inner {
+  width: min(1100px, calc(100% - 3rem)); margin: 0 auto;
+  min-height: 5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+}
+.brand { display: flex; align-items: center; gap: .85rem; color: inherit; }
+.brand img.mark { width: 36px; height: 36px; border-radius: 8px; display: block; }
+.brand img.word { height: 34px; width: auto; display: block; }
+.pill {
+  border: 1px solid rgba(0,240,255,.4);
+  background: rgba(0,240,255,.05);
+  color: var(--color-cyan);
+  padding: .4rem .75rem; border-radius: 999px;
+}
+.hero {
+  margin: 2rem 0 3rem; min-height: 500px; height: 60vh; max-height: 640px;
+  border-radius: 1rem; overflow: hidden; position: relative;
+  display: flex; align-items: flex-end;
+  background:
+    linear-gradient(to top, #09090b 0%, rgba(9,9,11,.55) 45%, transparent 100%),
+    url("https://longmontai.com/images/hero/hero-1.png") center/cover no-repeat;
+}
+.hero .copy { padding: 2.5rem 2rem 2.25rem; width: 100%; }
+.eyebrow { display: flex; align-items: center; gap: .5rem; color: var(--color-cyan); margin-bottom: .75rem; }
+.spark {
+  width: 16px; height: 16px; color: var(--color-cyan);
+}
+.hero h1 {
+  font-size: clamp(2.6rem, 12vw, 4.5rem); font-weight: 700;
+  letter-spacing: -.025em; line-height: 1.15; max-width: 14ch;
+}
+.lede { margin-top: 1rem; max-width: 36rem; color: var(--text-secondary); font-size: 1.125rem; }
+.triad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin: 0 0 4rem; }
+.glass {
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  transition: all .4s var(--ease);
+}
+.glass:hover {
+  background: var(--bg-card-hover);
+  border-color: rgba(121,40,202,.3);
+  box-shadow: 0 0 30px rgba(121,40,202,.1);
+  transform: translateY(-2px);
+}
+.glass h2 { font-size: clamp(1.45rem, 4vw, 1.875rem); letter-spacing: -.025em; margin: .35rem 0 .5rem; }
+.glass p { color: var(--text-secondary); font-size: .95rem; }
+section { margin-bottom: 4rem; }
+section > h2 {
+  font-size: clamp(1.75rem, 6vw, 2.25rem);
+  letter-spacing: -.025em; margin: .4rem 0 1.1rem;
+}
+.prose p { color: var(--text-secondary); max-width: 42rem; }
+.prose p + p { margin-top: 1rem; }
+.prose strong { color: var(--text-primary); font-weight: 500; }
+.plates { display: grid; gap: 1.5rem; margin-top: 1.5rem; }
+.plate { display: grid; grid-template-columns: 7.5rem 1fr; gap: 1.25rem; }
+.plate .tag { color: var(--color-cyan); padding-top: .35rem; }
+.plate h3 { font-size: 1.6rem; letter-spacing: -.025em; margin-bottom: .35rem; }
+.plate p { color: var(--text-secondary); }
+table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: .95rem; }
+th, td { text-align: left; padding: .85rem .6rem; border-bottom: 1px solid var(--glass-border); vertical-align: top; }
+th { color: var(--color-cyan); font-family: "JetBrains Mono", monospace; font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 500; }
+td strong { color: var(--text-primary); }
+.loop {
+  margin-top: 1.25rem; background: var(--bg-card); border: 1px solid var(--glass-border);
+  border-radius: var(--radius); padding: 1.25rem 1.4rem;
+  font-family: "JetBrains Mono", monospace; font-size: .72rem; line-height: 1.7; color: var(--text-secondary);
+  overflow-x: auto; white-space: pre;
+}
+.ticket h3 { font-size: 1.6rem; margin: .4rem 0 1rem; }
+.layers { display: grid; gap: .85rem; }
+.layers div { display: grid; grid-template-columns: 6rem 1fr; gap: 1rem; }
+.layers b { color: var(--color-cyan); padding-top: .2rem; }
+.layers p { color: var(--text-secondary); }
+.fail { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.25rem; }
+.fail article { background: rgba(255,255,255,.03); border: 1px solid var(--glass-border); border-radius: 12px; padding: 1rem; }
+.fail h4 { margin-bottom: .35rem; }
+.fail p { color: var(--text-secondary); font-size: .9rem; }
+.build { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.build article { padding-top: 1rem; border-top: 1px solid rgba(0,240,255,.35); }
+.build h3 { font-size: 1.35rem; margin-bottom: .4rem; }
+.build p { color: var(--text-secondary); font-size: .95rem; }
+ol.rules { list-style: none; counter-reset: rule; }
+ol.rules li {
+  counter-increment: rule; display: grid; grid-template-columns: 3rem 1fr; gap: 1rem;
+  padding: 1rem 0; border-top: 1px solid var(--glass-border);
+}
+ol.rules li::before {
+  content: counter(rule, decimal-leading-zero);
+  font-family: "JetBrains Mono", monospace; color: var(--color-cyan);
+  font-size: .75rem; letter-spacing: .08em; padding-top: .35rem;
+}
+ol.rules span { color: var(--text-secondary); }
+.quote { text-align: center; padding: 3rem 0 4rem; }
+.quote blockquote {
+  font-size: clamp(1.75rem, 5vw, 2.5rem); letter-spacing: -.03em; line-height: 1.2;
+  max-width: 18ch; margin: .75rem auto 0;
+}
+footer.site {
+  border-top: 1px solid var(--glass-border); padding: 3rem 0 2.5rem;
+}
+footer.site .cols { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 2rem; }
+footer.site h3 { font-size: 1.1rem; margin-bottom: .5rem; }
+footer.site p, footer.site a { color: var(--text-secondary); font-size: .9rem; }
+footer.site ul { list-style: none; }
+footer.site li + li { margin-top: .35rem; }
+.legal {
+  border-top: 1px solid var(--glass-border); margin-top: 2rem; padding-top: 1.25rem;
+  color: var(--text-muted); font-size: .8rem; text-align: center;
+}
+@media (max-width: 860px) {
+  .triad, .fail, .build, .plate, .layers div, footer.site .cols { grid-template-columns: 1fr; }
+  .hero { height: auto; min-height: 420px; }
+  .brand img.word { height: 28px; }
+}
+@media print {
+  #bg-mesh { display: none; }
+  body { background: #fff; color: #18181b; }
+  .lede, .prose p, .glass p, .plate p, .build p, ol.rules span, .layers p, .fail p { color: #3f3f46; }
+  header.bar { position: static; background: #fff; }
+  .hero { background: #09090b; color: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .glass, .loop, .fail article { background: #f4f4f5; border-color: #e4e4e7; }
+}
+</style>
+</head>
+<body>
+<div id="bg-mesh"></div>
+<header class="bar">
+  <div class="inner">
+    <a class="brand" href="https://longmontai.com">
+      <img class="mark" src="https://longmontai.com/brand/logo/logo-128.png" alt="" />
+      <img class="word" src="https://longmontai.com/brand/logo/wordmark-text-only-light.png" alt="Longmont AI" />
+    </a>
+    <span class="mono pill">Mini-lesson</span>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="hero">
+    <div class="copy">
+      <div class="eyebrow mono">
+        <svg class="spark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3l1.5 5.5L19 10l-5.5 1.5L12 17l-1.5-5.5L5 10l5.5-1.5L12 3z"/></svg>
+        Mini-lesson
+      </div>
+      <h1>Skills, agents, and <span class="grad">memories</span></h1>
+      <p class="lede">These three words get used like synonyms. They are not. In a modern AI system they sit on different layers of the same stack.</p>
+    </div>
+  </section>
+
+  <div class="triad">
+    <article class="glass">
+      <div class="mono" style="color:var(--color-cyan)">Who</div>
+      <h2>Agent</h2>
+      <p>The hire. A runtime with a goal, tools, and a loop. It decides whether to keep going.</p>
+    </article>
+    <article class="glass">
+      <div class="mono" style="color:var(--color-cyan)">How</div>
+      <h2>Skill</h2>
+      <p>The SOP binder. A playbook loaded on demand for a class of work. It does not clock in.</p>
+    </article>
+    <article class="glass">
+      <div class="mono" style="color:var(--color-cyan)">What</div>
+      <h2>Memory</h2>
+      <p>The scar tissue. What is true, and what already happened, after the context window dies.</p>
+    </article>
+  </div>
+
+  <section>
+    <div class="mono" style="color:var(--color-cyan)">01 — Analogy</div>
+    <h2>A new hire on day one.</h2>
+    <div class="prose">
+      <p>An agent uses skills and memories. Skills do not run themselves. Memory does not execute. Mix those up and you get a stuffed system prompt that looks sophisticated and behaves like amnesia with extra steps.</p>
+      <p>Anthropic’s own metaphor for a skill is an onboarding guide, not a second employee. Steal it. It is correct.</p>
+      <p>The <strong>agent</strong> is the hire. They have a mandate, a desk, tools, and a loop: look, think, act, check whether the job is done. Without that loop they are just sitting in Slack.</p>
+      <p>The <strong>skill</strong> is the SOP binder. “When someone asks for a refund, follow these steps. Use this template. Do not invent policy.” You do not tattoo the binder on their forehead. They pull the right folder when the task shows up. That is progressive disclosure, not magic.</p>
+      <p><strong>Memory</strong> is everything they learned after day one. This customer already got a courtesy credit. This repo uses pnpm. Last deploy died because someone edited the env file by hand.</p>
+      <p>The model itself is stateless. Every inference starts from zero. Continuity is an engineering layer you add around it.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="mono" style="color:var(--color-cyan)">02 — Definitions</div>
+    <h2>What each one actually is.</h2>
+    <div class="plates">
+      <article class="glass plate">
+        <div class="tag mono">Runtime</div>
+        <div>
+          <h3>Agent</h3>
+          <p>A system, not a model. Take a goal. Plan. Call tools. Observe. Decide the next action until the goal is met or a stop condition fires. Simon Willison still has it: an LLM in a loop with tools. The model reasons. The agent does. A chatbot that answers once is not an agent. A script that always calls the same tool in the same order is a workflow.</p>
+        </div>
+      </article>
+      <article class="glass plate">
+        <div class="tag mono">Playbook</div>
+        <div>
+          <h3>Skill</h3>
+          <p>Packaged procedural knowledge for a class of tasks. The 2026 format is a folder with SKILL.md plus optional scripts and templates — now an open spec at agentskills.io. At startup the agent sees only name and description. The full file loads when the task matches. A skill that is always in the prompt is just a system prompt wearing a costume.</p>
+        </div>
+      </article>
+      <article class="glass plate">
+        <div class="tag mono">Persistence</div>
+        <div>
+          <h3>Memory</h3>
+          <p>The writable store that survives a single model call. Working memory is the context window. Episodic memory is what happened. Semantic memory is what is true. Procedural memory is how to do things — which is where skills live on paper, and should not live as folklore in a notes file.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <div class="mono" style="color:var(--color-cyan)">03 — Stack</div>
+    <h2>They are not alternatives.</h2>
+    <div class="glass" style="padding:0 1rem">
+      <table>
+        <thead><tr><th>Layer</th><th>Primitive</th><th>Lives in</th><th>Question</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Agent</strong></td><td>Control loop, identity, permissions</td><td>Runtime / harness</td><td>Who is acting, and with what autonomy?</td></tr>
+          <tr><td><strong>Skill</strong></td><td>On-demand procedure</td><td>Files: SKILL.md + resources</td><td>How do I do this kind of work?</td></tr>
+          <tr><td><strong>Memory</strong></td><td>Persistent state</td><td>External store + context window</td><td>What do I know, and what happened before?</td></tr>
+          <tr><td><strong>Tools</strong></td><td>Actuators</td><td>Function schemas / MCP</td><td>What can I touch in the world?</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="loop">goal arrives
+  → assemble working memory
+      (prompt + recent turns + retrieved memories + skill index)
+  → match the task to a skill
+  → retrieve the relevant facts / episodes
+  → plan, call tools, observe
+  → write new memories
+  → if the work needs isolation: spawn a sub-agent</div>
+  </section>
+
+  <section>
+    <div class="mono" style="color:var(--color-cyan)">04 — Worked example</div>
+    <h2>One ticket. Three layers.</h2>
+    <article class="glass ticket">
+      <div class="mono" style="color:var(--color-cyan);display:flex;justify-content:space-between"><span>Support / Refund</span><span>Ticket 4821</span></div>
+      <h3>“Refund this customer.”</h3>
+      <div class="layers">
+        <div><b class="mono">Memory</b><p>Enterprise plan. One courtesy credit already granted in March.</p></div>
+        <div><b class="mono">Skill</b><p>Refund playbook: eligibility, approval threshold, tone, which fields to log.</p></div>
+        <div><b class="mono">Agent</b><p>Pulls the order through a tool, applies the playbook to those remembered facts, then refunds or escalates.</p></div>
+      </div>
+      <div class="fail">
+        <article><h4>No memory</h4><p>Amnesiac intern. Re-asks everything. May issue a second courtesy credit.</p></article>
+        <article><h4>No skill</h4><p>Improvises policy. Sometimes generous, sometimes illegal, never consistent.</p></article>
+        <article><h4>No agent</h4><p>A well-written PDF that cannot click Submit.</p></article>
+      </div>
+    </article>
+  </section>
+
+  <section>
+    <div class="mono" style="color:var(--color-cyan)">05 — When to build which</div>
+    <h2>Do not start with a fleet.</h2>
+    <div class="build">
+      <article>
+        <h3>Write a skill</h3>
+        <p>When the procedure is known and repeatable — review checklist, refund rules, how we make a deck. You are tired of re-explaining it. You want it versioned in git and loaded only when relevant.</p>
+      </article>
+      <article>
+        <h3>Add memory</h3>
+        <p>When facts, preferences, or events must survive the session, and when the system should write back what it just learned. If it only reads, you built a search index.</p>
+      </article>
+      <article>
+        <h3>Build an agent</h3>
+        <p>When the next action depends on observations. Multi-step work, tools, a stop condition. Skills and memory are what make that loop useful the second time you run it.</p>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <div class="mono" style="color:var(--color-cyan)">06 — Production mistakes</div>
+    <h2>The mix-ups that ship.</h2>
+    <ol class="rules">
+      <li><div><strong>Calling a chatbot an agent.</strong> <span>One reply is not agency.</span></div></li>
+      <li><div><strong>Stuffing procedures into memory.</strong> <span>“Remember how we deploy” becomes folklore. Put the procedure in a versioned skill.</span></div></li>
+      <li><div><strong>Stuffing facts into skills.</strong> <span>A playbook that hard-codes the user’s name is a diary. Skills should still be right if the user changes.</span></div></li>
+      <li><div><strong>Treating RAG as memory.</strong> <span>RAG is a corpus a human stored. Memory is what this agent wrote back. Different write path. Different trust model.</span></div></li>
+      <li><div><strong>Treating tools as skills.</strong> <span>Hands versus training. MCP gives access. A skill says when to use it and what “done” looks like.</span></div></li>
+      <li><div><strong>A stuffed system prompt as a fake hybrid.</strong> <span>Always-on walls of instructions fight each other and get ignored.</span></div></li>
+      <li><div><strong>Memory with no forget path.</strong> <span>Stale pricing, stale preferences, confident wrongness. Bad memory makes agents worse.</span></div></li>
+      <li><div><strong>Skills that never fire or always fire.</strong> <span>Progressive disclosure lives or dies on the description.</span></div></li>
+      <li><div><strong>No write-back.</strong> <span>Read-only “memory” is search.</span></div></li>
+      <li><div><strong>One mega-agent instead of composable skills.</strong> <span>Hard to test, hard to share, hard to debug.</span></div></li>
+    </ol>
+  </section>
+
+  <section>
+    <div class="mono" style="color:var(--color-cyan)">07 — Adjacent terms</div>
+    <h2>So they do not become a fourth lesson.</h2>
+    <div class="prose">
+      <p><strong>Tools / MCP</strong> give access. A database connector lets the agent query billing. A skill tells it which query pattern to use and what eligible means. Access is not judgment.</p>
+      <p><strong>System prompts / AGENTS.md</strong> are standing instructions that load every session. Keep them short. If a procedure is only sometimes relevant, it belongs in a skill.</p>
+      <p><strong>Sub-agents</strong> are workers with their own context windows. Use them for isolation. Use a skill when the current agent needs a playbook. A skill is instructions. A sub-agent is a worker.</p>
+      <p>On paper, skills are externalized procedural memory. In engineering, keep the storage separate: skills are versioned playbooks; memories are accumulated state that can go stale. Related layers. Different lifecycles.</p>
+    </div>
+  </section>
+
+  <div class="quote">
+    <div class="mono" style="color:var(--color-cyan)">Keep this</div>
+    <blockquote>The agent is the employee. The skill is the runbook. Memory is the scar tissue.</blockquote>
+  </div>
+
+  <footer class="site">
+    <div class="cols">
+      <div>
+        <a class="brand" href="https://longmontai.com" style="margin-bottom:.75rem">
+          <img class="mark" src="https://longmontai.com/brand/logo/logo-128.png" alt="" />
+          <img class="word" src="https://longmontai.com/brand/logo/wordmark-text-only-light.png" alt="Longmont AI" />
+        </a>
+        <p>Community AI meetups in Longmont, CO.<br />Learn · Build · Share</p>
+      </div>
+      <div>
+        <h3>Quick links</h3>
+        <ul>
+          <li><a href="https://longmontai.com">Home</a></li>
+          <li><a href="https://longmontai.com/countdown">Countdown</a></li>
+          <li><a href="https://www.meetup.com/longmont-ai-for-business-owners-and-creators/">Meetup</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>This lesson</h3>
+        <p>Print this page if you want a booklet. The design follows the Longmont AI brand kit 1:1.</p>
+      </div>
+    </div>
+    <div class="legal">longmontai.com · Curated by Intelligence.</div>
+  </footer>
+</div>
+</body>
+</html>
